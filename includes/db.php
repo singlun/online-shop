@@ -2,11 +2,11 @@
 
 	session_start();
 	error_reporting(E_ERROR | E_PARSE);
-	//database config;
-	$server = "localhost";
-	$username = "shopadmin";
-	$password = "92179slt";
-	$database = "shopping";
+	//database config updated
+	$server = "xxx";
+	$username = "xxx";
+	$password = "xxx";
+	$database = "xxx";
 	$conn = mysqli_connect($server, $username, $password,$database);
 
 	if (!$conn) {
