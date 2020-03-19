@@ -1,0 +1,69 @@
+.navbar-custom{
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.navbar a{
+	color: white;
+	font-weight: bold;
+}
+
+.navbar ul a:hover {
+	background: orange;
+	cursor: pointer;
+}
+
+.page-header h2 {
+	font-size: 30px;
+	color: gray;
+}
+
+header {
+	height: 500px;
+	width: 100%;
+	color: white;
+	padding:150px 0;
+}
+
+header h1 {
+	font: 50px;
+	text-shadow: 3px 3px 2px black;
+}
+
+header p {
+	font-size: 20px;
+	text-shadow: 2px 2px 2px black;
+}
+
+.block-a {
+	font-size: 20px;
+	margin: 20px 0;
+	border-top: 1px solid gray;
+	padding: 5px 0;
+}
+
+.block-b {
+	font-size: 20px;
+	border-bottom: 1px solid gray;
+	padding: 5px 0;
+	background: #f1f1f1;
+}
+
+.footer {
+	width: 100%;
+	padding: 20px 0;
+	background: gray;	
+	color: white;
+}
+
+.thumbnail img {
+	height: 200px;
+	width: 300px;
+}
+
+.about-para {
+	font-size: 18px;
+	line-height: 30px;
+}
+
