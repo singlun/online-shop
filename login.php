@@ -110,6 +110,15 @@
 					
 					<div class="text-center"><h1>WELCOME TO THE ONLINE STORE</h1></div>
 					<div class="text-center" id="feedback" ><a style="color: #3399ff; text-decoration: none;cursor: pointer;" data-toggle="modal" data-target="#myModal">Not a user - click to Registered</a></div>
+					<?php
+						if (isset($_ENV["ABC"])) {
+							$ABC = $_ENV["ABC"];
+							echo $ABC;
+						}
+						else {
+							echo "hi";
+						}
+					?>					
 					<form class="form-horizontal" action="index.php" method="post">
 		<?php				
 						if (isset($_REQUEST['login'])) {

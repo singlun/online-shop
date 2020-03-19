@@ -22,7 +22,6 @@
 			
 			<?php	
 			
-			
 					if (isset($_REQUEST['cat_id'])) {		
 						//$sql = "select * from items where item_cat = '$_REQUEST[cat_id]'";
 						$sql = "select * from items, item_cat where item_cat = cat_id and item_cat = '$_REQUEST[cat_id]'";
