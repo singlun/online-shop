@@ -13,19 +13,21 @@
 		<script src="js/bootstrap.js"></script>		
 		<script>
 		
-			function buy_func(item_id, mode){
-
-			    xmlhttp = new XMLHttpRequest();				
+			function buy_func(item_id, mode, qty){
+			   /* var xmlhttp = new XMLHttpRequest();					
 				xmlhttp.onreadystatechange = function(){
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
-						var receiver = document.getElementById('order_detail');
-						receiver.innerHTML = xmlhttp.responseText;
+						//var receiver = document.getElementById('order_detail');
+						//receiver.innerHTML = p_xmlhttp.responseText;
 					}
-				}	
-										
-				xmlhttp.open('GET','order.php?chk_item_id=' + item_id + '&mode=' + mode,true);
-				xmlhttp.send();
-				window.location.replace('buy.php?chk_item_id='+ item_id);
+					alert(xmlhttp.readyState);
+				}												
+				xmlhttp.open('GET','order.php?chk_item_id=' + item_id,true);
+				xmlhttp.send();*/
+				var querystring = 'chk_item_id=' + item_id + '&mode=' + mode +  '&chk_qty=' + qty;
+				$.get('order.php', querystring, function(data) {
+					window.location.replace('buy.php');
+				});	
 			}		
 		
 			/*function a_func(item_id){				
@@ -79,27 +81,29 @@
 			
 			
 				if (isset($_REQUEST['itemid'])) {	
-						$sql_query = "select * from items  where item_id = '". $_REQUEST['itemid'] . "'";						
+						$sql_query = "select * from items  where item_id = ". $_REQUEST['itemid'];						
 						$sql_result = mysqli_query($conn , $sql_query);	
 						$results = mysqli_fetch_assoc($sql_result);	
-						$sql_chk_query = "select sum(chk_qty) 'chk_qty' from checkout  where chk_item = '". $_REQUEST['itemid'] . "' and chk_ref =  '" . $_SESSION['ref'] . "' group by chk_item, chk_ref , u_id" ;
+						$sql_chk_query = "select SUM(chk_qty) from checkout  where chk_item = ". $_REQUEST['itemid'] . " group by chk_item, u_id" ;
 						//echo $sql_chk_query;
 						$sql_chk_result = mysqli_query($conn , $sql_chk_query);	
 						$chk_results = mysqli_fetch_assoc($sql_chk_result);	
 
 						if (isset($chk_results['chk_qty'])) {
-							$_SESSION['mode'] = "U";							
+							$mode = "U";							
 						}
 						else {
-							$_SESSION['mode']= "I";							
+							$mode = "I";						
 						}
 						
-						//if (($chk_results['chk_qty'] == null) and ($chk_results['chk_qty'] != 0)) {
-							//$_SESSION['chk_qty']= 0;
-						//}
-						//else {
-							$_SESSION['chk_qty'] = isset($chk_results['chk_qty']) ? $chk_results['chk_qty'] + 1 : 0;	
-						//}
+						if ($chk_results['chk_qty'] == null) {
+							$chk_qty= 1;
+						} elseif ($chk_results['chk_qty'] == 0) {
+							$chk_qty= 0;
+						}
+						else {
+							$chk_qty = $chk_results['chk_qty'] + 1;	
+						}
 
 						//echo  $_SESSION['chk_qty'];
 									
@@ -114,9 +118,18 @@
 								";
 				}
 				?>	
-						<?php $buy_param = strval($_REQUEST['itemid']) . ",'" . $_SESSION['mode'] . "'"; ?>	
+						<?php $buy_param = strval($_REQUEST['itemid']) . ",'" . $mode . "'," . strval($chk_qty); ?>	
 						<aside class="col-md-4">
-							<button id="btn"  class="btn btn-success btn-lg btn-block" onclick="buy_func(<?php echo $buy_param; ?>)">Buy</button>							
+						<?php 
+							if ($chk_qty) {
+									
+									echo '<button id="btn"  class="btn btn-success btn-lg btn-block" onclick="buy_func(' . $buy_param . ')">Buy</button>';
+							} 
+							else {
+									echo "<button id='btn'  class='btn btn-danger btn-lg btn-block'>Out Of Stock</button>";
+							}
+						?>
+
 							<br>
 							<ul class="list-group">
 								<li class="list-group-item">

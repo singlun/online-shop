@@ -1,8 +1,7 @@
 <?php
-	//include("includes/db.php");
-	//include("includes/chklogin.php");
-	include("order.php");
-?>	
+	include("includes/db.php");
+	include("includes/chklogin.php");
+?>				
 			<div class="page-header">
 				<h2 class="text-left">Checkout</h2>
 				<p class="text-right"> <button class="btn btn-success" onclick="checkout_func()" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#myModal">Checkout</button></p>			
@@ -24,9 +23,8 @@
 							<tbody>
 									<?php
 
-												$sql = "SELECT a.item_id 'item_id', a.item_qyt , c.chk_ref 'ref_id', c.chk_qty, a.item_title 'item_title', a.item_price 'price', c.chk_qty * a.item_price 'total_price' FROM order_info c, items a WHERE c.u_id = '" . $_SESSION['u_id'] . "' and c.chk_item = a.item_id and c.chk_ref = '$_SESSION[ref]'";											
-										
-												//echo $sql;
+												$sql = "SELECT a.item_id 'item_id', a.item_qyt , c.chk_ref 'ref_id', c.chk_qty, a.item_title 'item_title', a.item_price 'price', c.chk_qty * a.item_price 'total_price' FROM order_info c, items a WHERE c.u_id = '" . $_SESSION['u_id'] . "' and c.chk_item = a.item_id and c.chk_ref = '" . $_SESSION[ref] . "'";											
+												
 												$run = mysqli_query($conn , $sql);	
 												$c = 1;
 												$order_qty = 1;
@@ -38,7 +36,7 @@
 																	echo "<td>$c</td>";
 																	echo "<td>$rows[item_title]</td>";
 																	echo "<td><input type='number' min='1' max='100' style='width: 50' onblur=\"Amend_func($rows[item_id],'U',this.value)\" value='$rows[chk_qty]'</td>";
-																	echo "<td><button class='btn btn-danger btn-sm' onclick=\"Amend_func($rows[item_id],'D',-1)\">Delete</button></td>";
+																	echo "<td><button class='btn btn-danger btn-sm' onclick=\"Delete_func($rows[item_id])\">Delete</button></td>";
 																	echo "<td class='text-right'><b>$rows[price]/=</b></td>";
 																	echo "<td class='text-right'><b>$rows[total_price] /=</b></td>";										
 																echo "</tr>";
