@@ -13,7 +13,7 @@
 							while($rows = mysqli_fetch_assoc($run)){
 								$str_name =  ucwords($rows['cat_name']);
 								
-								echo "<li><a href='index.php?cat_id=$rows[cat_id]'>$str_name</a></li>";
+								echo "<li><a href='index.php?nologin=true&cat_id=$rows[cat_id]'>$str_name</a></li>";
 							}
 					?>
 				</ul>

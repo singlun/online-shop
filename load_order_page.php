@@ -1,6 +1,13 @@
 <?php
-	include("includes/db.php");
-	include("includes/chklogin.php");
+include("includes/db.php");
+
+session_start();
+
+if($_SESSION['loginSucess'] != "true") {
+	header("Location: http://localhost/online-shop/login.php");
+}
+
+	// include("includes/chklogin.php");
 ?>	
 			<div class="page-header">
 				<h2 class="text-left">Sucessfully Checkout</h2>		
@@ -22,7 +29,6 @@
 							<?php
 
 										$sql = "SELECT a.item_id 'item_id', a.item_qyt , c.chk_ref 'ref_id', c.chk_qty, a.item_title 'item_title', a.item_price 'price', c.chk_qty * a.item_price 'total_price' FROM checkout c, items a WHERE c.chk_item = a.item_id and c.chk_ref = '" . $_SESSION[ref] . "'";											
-								
 										$run = mysqli_query($conn , $sql);	
 										$c = 1;
 										$order_qty = 1;

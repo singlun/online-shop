@@ -1,12 +1,19 @@
-<?php 
+<?php
+include("includes/utils.php");
+
+if (session_status() == PHP_SESSION_NONE) {
 	session_start();
-	//if (isset($_REQUEST['logout'])){
-	$_SESSION['u_id'] = "false";
-	$_SESSION['mode'] = "L";
-	$_SESSION['chk_qty'] = 0;	
-	$_SESSION['username'] = "";
-		//echo "logout";
-	//}
+}
+else {
+	session_destroy();
+}
+
+if (getIfSet($_REQUEST['logout']) != NULL) {
+		$_SESSION['ref'] = "";
+		$_SESSION['u_id'] = "false";
+		$_SESSION['chk_qty'] = 0;	
+		$_SESSION['username'] = "";
+}
 ?>
 
 
@@ -32,6 +39,7 @@
 						var receiver = document.getElementById('feedback');
 						receiver.innerHTML = xmlhttp.responseText;
 					}
+			
 				}	
 
 				var username=encodeURIComponent(document.getElementById("username").value);
@@ -45,12 +53,9 @@
 				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 				xmlhttp.send(parameters)
 
-				//xmlhttp.open('GET','user_reg.php',true);
-				//xmlhttp.send();
-
 				$('#myModal').modal('hide');
 				
-				userform.reset();
+				// userform.reset();
 				
 				return false;
 			}
@@ -60,7 +65,7 @@
 	
 	<body>	
 	<div class="container">		
-					<div id="myModal" class="modal fade" >
+					<div id="myModal" class="modal fade">
 						<div class="modal-dialog">
 							<!-- Modal content-->
 							<div class="modal-content">
@@ -111,8 +116,8 @@
 					<div class="text-center"><h1>WELCOME TO THE ONLINE STORE</h1></div>
 					<div class="text-center" id="feedback" ><a style="color: #3399ff; text-decoration: none;cursor: pointer;" data-toggle="modal" data-target="#myModal">Not a user - click to Registered</a></div>					
 					<form class="form-horizontal" action="index.php" method="post">
-		<?php				
-						if (isset($_REQUEST['login'])) {
+		<?php			
+						if (getIfSet($_REQUEST['login']) != NULL) {
 								echo "<div class='form-group'>";
 								echo "<div  class='col-md-4 control-label'></div>";
 								echo "<div class='col-md-4' style='color: red'><b>Login Fail. Please Login Again.</b></div>";
@@ -123,14 +128,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">User Name</label>
 							<div class="col-md-4">
-								<input name= "u_name" type="text" value="" class="form-control" required>
+								<input name= "u_name" type="text"  class="form-control" required>
 							</div>
 							<div class="col-md-4"></div>							
 						</div>
 						<div class="form-group">   
 							<label class="col-md-4 control-label">Password</label>
 							<div class="col-md-4">
-								<input name= "u_password" type="password"  value="" class="form-control" required>
+								<input name= "u_password" type="password" class="form-control" required>
 							</div>
 							<div class="col-md-4"></div>	
 						</div>	
@@ -140,7 +145,8 @@
 								<button class="btn btn-danger">Login</button>														
 							</div>
 							<div class="col-md-4"></div>	
-						</div>						
+						</div>
+						<input type="hidden" name="nologin" class="form-control">						
 					</form>							
 	</div>
 	</body>

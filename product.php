@@ -1,6 +1,15 @@
 <?php
-	include("includes/db.php");
-	include("includes/chklogin.php");
+
+include("includes/utils.php");
+include("includes/db.php");
+
+session_start();
+
+if($_SESSION['loginSucess'] != "true") {
+	header("Location: http://localhost/online-shop/login.php");
+}
+
+	// include("includes/chklogin.php");
 ?>
 <html>
 	<head>
@@ -24,6 +33,7 @@
 				}												
 				xmlhttp.open('GET','order.php?chk_item_id=' + item_id,true);
 				xmlhttp.send();*/
+				// alert('chk_item_id=' + item_id + '&mode=' + mode +  '&chk_qty=' + qty);
 				var querystring = 'chk_item_id=' + item_id + '&mode=' + mode +  '&chk_qty=' + qty;
 				$.get('order.php', querystring, function(data) {
 					window.location.replace('buy.php');
@@ -63,7 +73,9 @@
 				<ol class="breadcrumb">
 					<li><a href="index.php">Home</a></li>
 					<?php	
-						if (isset($_REQUEST['itemid'])) {	
+
+
+						if (getIfSet($_REQUEST['itemid']) != NULL) {	
 							$catname = str_replace('-',' ' ,$_REQUEST['catname']);
 							$title = str_replace('-',' ' ,$_REQUEST['title']);
 							echo "<li><a href='index.php?cat_id=".$_REQUEST['catid']."'>$catname</a></li>";
@@ -80,16 +92,16 @@
 			//echo $_REQUEST['itemid'];
 			
 			
-				if (isset($_REQUEST['itemid'])) {	
+				if (getIfSet($_REQUEST['itemid']) != NULL) {	
 						$sql_query = "select * from items  where item_id = ". $_REQUEST['itemid'];						
 						$sql_result = mysqli_query($conn , $sql_query);	
 						$results = mysqli_fetch_assoc($sql_result);	
-						$sql_chk_query = "select SUM(chk_qty) from checkout  where chk_item = ". $_REQUEST['itemid'] . " group by chk_item, u_id" ;
-						//echo $sql_chk_query;
+						$sql_chk_query = "select SUM(chk_qty) chk_qty from order_info  where chk_item = ". $_REQUEST['itemid'] . " and u_id = " . $_SESSION['u_id'];
 						$sql_chk_result = mysqli_query($conn , $sql_chk_query);	
 						$chk_results = mysqli_fetch_assoc($sql_chk_result);	
 
-						if (isset($chk_results['chk_qty'])) {
+
+						if (getIfSet($chk_results['chk_qty']) != NULL) {
 							$mode = "U";							
 						}
 						else {
@@ -158,7 +170,8 @@
 			</div>
 			<section class="row">
 				<?php
-						if (isset($_REQUEST['catid'])) {		
+				
+						if (getIfSet($_REQUEST['catid']) != NULL) {		
 							//$sql = "select * from items where item_cat = '$_REQUEST[cat_id]'";
 							$sql = "select * from items, item_cat where item_cat = cat_id and item_cat = '$_REQUEST[catid]' and item_id != '$_REQUEST[itemid]'";
 							$run = mysqli_query($conn , $sql);	

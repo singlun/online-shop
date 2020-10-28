@@ -1,6 +1,15 @@
 <?php
-	include("includes/db.php");
-	include("includes/chklogin.php");
+
+include("includes/db.php");
+
+session_start();
+
+if($_SESSION['loginSucess'] != "true") {
+		header("Location: http://localhost/online-shop/login.php");
+	}
+
+
+	// include("includes/chklogin.php");
 ?>	
 <html>
 	<head>
