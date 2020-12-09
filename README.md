@@ -1,3 +1,3 @@
 "# online-shopping" 
 
-Demo Link: http://http://programming.website/
+Demo Link: http://programming.website/
